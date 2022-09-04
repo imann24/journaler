@@ -47,9 +47,9 @@ const App = () => {
             date: "",
             dayOfTheWeek: `${getDayOfWeek()}`,
             score: 0,
-            gratitudes: [],
-            forgives: [],
-            curiosities: [],
+            gratitudes: ["", "", ""],
+            forgives: ["", "", ""],
+            curiosities: ["", "", ""],
           }}
           onSubmit={async (values) => {
             await new Promise((r) => setTimeout(r, 500));
@@ -58,6 +58,7 @@ const App = () => {
         >
           {props => (
             <Form>
+              <Text h2>Meta</Text>
               <label htmlFor="day">Day: </label>
               <Field
                 id="day"
@@ -83,8 +84,48 @@ const App = () => {
                 }}/>
               )}
               </Field>
-              <label>/10</label>
+              <label> / <b>10</b></label>
+
               <Spacer/>
+
+              <Text h2>Gratitude</Text>
+              <FieldArray name="gratitudes" render={arrayHelpers => (
+                <section>
+                  {props.values.gratitudes.map((grat, index) => (
+                    <section key={`section.${index}`}>
+                      <label key={`label.${index}`}>{index + 1}. </label>
+                      <Field key={`grat.${index}`} name={`gratitudes.${index}`} value={grat} className="long-field"></Field>
+                      <Spacer key={`spacer.${index}`}/>
+                    </section>
+                  ))}
+                </section>
+              )}/>
+
+              <Text h2>Forgiveness</Text>
+              <FieldArray name="forgives" render={arrayHelpers => (
+                <section>
+                  {props.values.forgives.map((forg, index) => (
+                    <section key={`section.${index}`}>
+                      <label key={`label.${index}`}>{index + 1}. </label>
+                      <Field key={`for.${index}`} name={`forgives.${index}`} value={forg} className="long-field" ></Field>
+                      <Spacer key={`spacer.${index}`}/>
+                    </section>
+                  ))}
+                </section>
+              )}/>
+
+              <Text h2>Curiosity</Text>
+              <FieldArray name="curiosities" render={arrayHelpers => (
+                <section>
+                  {props.values.curiosities.map((cur, index) => (
+                    <section key={`section.${index}`}>
+                      <label key={`label.${index}`}>{index + 1}. </label>
+                      <Field key={`cur.${index}`} name={`curiosities.${index}`} value={cur} className="long-field" ></Field>
+                      <Spacer key={`spacer.${index}`}/>
+                    </section>
+                  ))}
+                </section>
+              )}/>
 
               <Button type="submit">Save</Button>
             </Form>
