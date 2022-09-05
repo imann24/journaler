@@ -40,3 +40,9 @@
 .long-field {
   width: 50vw;
 }
+
+#journal-entry {
+  width: 51vw;
+  height: 15vh;
+  overflow-y: visible
+}

@@ -1,4 +1,3 @@
-import "./App.css";
 import { 
   Formik, 
   Field, 
@@ -14,6 +13,7 @@ import {
   Spacer,
   Text,
 } from '@nextui-org/react';
+import "./App.css";
 
 const App = () => {
   const getAllWeekDays = () => {
@@ -50,6 +50,7 @@ const App = () => {
             gratitudes: ["", "", ""],
             forgives: ["", "", ""],
             curiosities: ["", "", ""],
+            entry: ""
           }}
           onSubmit={async (values) => {
             await new Promise((r) => setTimeout(r, 500));
@@ -126,6 +127,11 @@ const App = () => {
                   ))}
                 </section>
               )}/>
+
+              <Text h2>Entry</Text>
+              <Field name="entry" as="textarea" id="journal-entry"/>
+
+              <Spacer/>
 
               <Button type="submit">Save</Button>
             </Form>
