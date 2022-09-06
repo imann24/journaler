@@ -14,11 +14,21 @@ import {
   Text,
 } from '@nextui-org/react';
 import "./App.css";
+import { saveJournal } from './journal'
 
 const App = () => {
+  const today = new Date()
+
+  const getFormattedDate = () => {
+    const month = today.getMonth() + 1
+    const day = today.getDate().toString().padStart(2, "0")
+    const year = today.getFullYear() - 2000
+    return `${month}.${day}.${year}`
+  }
+
   const getAllWeekDays = () => {
-      var baseDate = new Date(Date.UTC(2017, 0, 2))
-      var weekDays = []
+      const baseDate = new Date(Date.UTC(2017, 0, 2))
+      const weekDays = []
       for (let i = 0; i < 7; i++) {       
           weekDays.push(baseDate.toLocaleDateString("en-US", { weekday: "long" }).toUpperCase())
           baseDate.setDate(baseDate.getDate() + 1)
@@ -27,7 +37,7 @@ const App = () => {
   }
 
   const getDayOfWeek = () => {
-    return new Date().toLocaleDateString("en-US", {
+    return today.toLocaleDateString("en-US", {
       weekday: "long",
     }).toUpperCase()
   }
@@ -44,7 +54,7 @@ const App = () => {
         <Spacer/>
         <Formik
           initialValues={{
-            date: "",
+            date: `${getFormattedDate()}`,
             dayOfTheWeek: `${getDayOfWeek()}`,
             score: 0,
             gratitudes: ["", "", ""],
@@ -53,8 +63,7 @@ const App = () => {
             entry: ""
           }}
           onSubmit={async (values) => {
-            await new Promise((r) => setTimeout(r, 500));
-            alert(JSON.stringify(values, null, 2));
+            saveJournal(values)
           }}
         >
           {props => (
@@ -82,6 +91,7 @@ const App = () => {
                   } else if (e.target.value > 10) {
                     e.target.value = 10
                   }
+                  props.handleChange(e)
                 }}/>
               )}
               </Field>
