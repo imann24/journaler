@@ -9,11 +9,13 @@ import {
   Card,
   Container,
   createTheme,
+  Dropdown,
   Input,
   NextUIProvider,
   Spacer,
   Switch,
   Text,
+  Textarea,
 } from "@nextui-org/react"
 import useDarkMode from "use-dark-mode"
 import "./App.css";
@@ -58,16 +60,17 @@ const App = () => {
   return (
     <NextUIProvider className="App" theme={darkMode.value ? darkTheme : lightTheme}>
       <Container>
-        <Switch
-          checked={darkMode.value}
-          onChange={() => darkMode.toggle()}
-        />
         <Spacer/>
         <Card>
           <Card.Body>
             <Text h1>Journaler</Text>
           </Card.Body>
         </Card>
+        <label htmlFor="Switch">Dark Mode: </label><br/>
+        <Switch
+          checked={darkMode.value}
+          onChange={() => darkMode.toggle()}
+        />
         <Spacer/>
         <Formik
           initialValues={{
@@ -92,8 +95,18 @@ const App = () => {
                 as="select" 
                 name="dayOfTheWeek"
                 type="day">
-                {getAllWeekDays().map((d) => 
-                  <option key={d} value={d}>{d}</option>
+                {({ field, form, meta }) => (
+                <Dropdown>
+                  <Dropdown.Button flat>{props.values.dayOfTheWeek}</Dropdown.Button>
+                  <Dropdown.Menu aria-label="days-of-week" name="dayOfWeek" onAction={(val) => {
+                    form.setFieldValue("dayOfTheWeek", val)
+                    console.log(val)
+                }}>
+                    {getAllWeekDays().map((d) => 
+                      <Dropdown.Item key={d} value={d}>{d}</Dropdown.Item>
+                    )}
+                  </Dropdown.Menu>
+                </Dropdown>
                 )}
               </Field>
               
@@ -122,7 +135,7 @@ const App = () => {
                   {props.values.gratitudes.map((grat, index) => (
                     <section key={`section.${index}`}>
                       <label key={`label.${index}`}>{index + 1}. </label>
-                      <Field key={`grat.${index}`} name={`gratitudes.${index}`} value={grat} className="long-field"></Field>
+                      <Input key={`grat.${index}`} name={`gratitudes.${index}`} value={grat} className="long-field" onChange={props.handleChange}/>
                       <Spacer key={`spacer.${index}`}/>
                     </section>
                   ))}
@@ -135,7 +148,7 @@ const App = () => {
                   {props.values.forgives.map((forg, index) => (
                     <section key={`section.${index}`}>
                       <label key={`label.${index}`}>{index + 1}. </label>
-                      <Field key={`for.${index}`} name={`forgives.${index}`} value={forg} className="long-field" ></Field>
+                      <Input key={`for.${index}`} name={`forgives.${index}`} value={forg} className="long-field" onChange={props.handleChange}/>
                       <Spacer key={`spacer.${index}`}/>
                     </section>
                   ))}
@@ -148,7 +161,7 @@ const App = () => {
                   {props.values.curiosities.map((cur, index) => (
                     <section key={`section.${index}`}>
                       <label key={`label.${index}`}>{index + 1}. </label>
-                      <Field key={`cur.${index}`} name={`curiosities.${index}`} value={cur} className="long-field" ></Field>
+                      <Input key={`cur.${index}`} name={`curiosities.${index}`} value={cur} className="long-field" onChange={props.handleChange}/>
                       <Spacer key={`spacer.${index}`}/>
                     </section>
                   ))}
@@ -156,7 +169,11 @@ const App = () => {
               )}/>
 
               <Text h2>Entry</Text>
-              <Field name="entry" as="textarea" id="journal-entry"/>
+              <Field name="entry" as="textarea">
+              {({ field, form, meta }) => (
+                <Textarea name="entry" id="journal-entry" onChange={props.handleChange} />
+              )}
+              </Field>
 
               <Spacer/>
 
