@@ -3,20 +3,33 @@ import {
   Field, 
   FieldArray,
   Form
-} from "formik";
+} from "formik"
 import { 
   Button,
   Card,
   Container,
+  createTheme,
   Input,
   NextUIProvider,
   Spacer,
+  Switch,
   Text,
-} from '@nextui-org/react';
+} from "@nextui-org/react"
+import useDarkMode from "use-dark-mode"
 import "./App.css";
-import { saveJournal } from './journal'
+import { saveJournal } from "./journal"
+
+const lightTheme = createTheme({
+  type: "light",
+})
+
+const darkTheme = createTheme({
+  type: "dark",
+})
 
 const App = () => {
+  const darkMode = useDarkMode(true)
+
   const today = new Date()
 
   const getFormattedDate = () => {
@@ -43,8 +56,12 @@ const App = () => {
   }
 
   return (
-    <NextUIProvider className="App">
+    <NextUIProvider className="App" theme={darkMode.value ? darkTheme : lightTheme}>
       <Container>
+        <Switch
+          checked={darkMode.value}
+          onChange={() => darkMode.toggle()}
+        />
         <Spacer/>
         <Card>
           <Card.Body>
