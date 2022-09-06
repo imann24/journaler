@@ -85,7 +85,7 @@ const App = () => {
               <label htmlFor="score">Score: </label>
               <Field name="score">
               {({ field, form, meta }) => (
-                <Input id="score" name="score" type="number" min="0" max="10" onChange={(e) => {
+                <Input id="score" name="score" type="number" min="0" max="10" step="0.25" onChange={(e) => {
                   if (e.target.value < 0) {
                     e.target.value = 0
                   } else if (e.target.value > 10) {
